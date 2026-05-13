@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>DAR Encryption Status — Cognizant IAM</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e17;--bg3:#111827;--card:#131b2e;--border:#1e2d4a;--border2:#243452;--accent:#00d4ff;--a2:#0099cc;--green:#00ff9d;--red:#ff4466;--yellow:#ffd700;--orange:#ff8c42;--purple:#a855f7;--text:#e2eaff;--text2:#8899bb;--text3:#556688}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+/* ── LIGHT THEME ── */
+body.light{--bg:#f0f4f8;--bg3:#e2e8f0;--card:#ffffff;--border:#cbd5e1;--border2:#94a3b8;--accent:#0066cc;--a2:#0052a3;--green:#16a34a;--red:#dc2626;--yellow:#d97706;--orange:#ea580c;--purple:#7e22ce;--text:#0f172a;--text2:#334155;--text3:#64748b}
+body.light header{background:linear-gradient(135deg,#1e3a8a,#1e40af,#1d4ed8)}
+body.light .sc:hover{box-shadow:0 6px 20px rgba(0,102,204,.15)}
+body.light .sc .sv{color:#0f172a!important;font-weight:800!important}
+body.light .sc .sl{color:#64748b!important}
+body.light .sc .ss{color:#475569!important}
+body.light .cm{background:#f8fafc;border:1px solid #94a3b8;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+body.light .cmv{font-weight:800!important}
+body.light .cmv[style*="color:#00ff9d"]{color:#166534!important}
+body.light .cmv[style*="color:#ff4466"]{color:#991b1b!important}
+body.light .cmv[style*="color:#ff8c42"]{color:#9a3412!important}
+body.light .cmv[style*="color:#00d4ff"]{color:#1e40af!important}
+body.light .cmv[style*="color:#a855f7"]{color:#6b21a8!important}
+body.light .lv{color:#0f172a!important;font-weight:700!important}
+body.light .bv{color:#1e293b!important;font-weight:700!important}
+body.light .rc strong{color:#1e40af!important;font-weight:700!important}
+body.light th{background:#e2e8f0;color:#475569}
+body.light tr:hover td{background:rgba(0,102,204,.04)}
+body.light .b.bl{background:rgba(22,163,74,.1);color:#15803d;border-color:rgba(22,163,74,.3)}
+body.light .b.bok{background:rgba(22,163,74,.1);color:#15803d;border-color:rgba(22,163,74,.3)}
+body.light .b.bpend{background:rgba(234,88,12,.1);color:#c2410c;border-color:rgba(234,88,12,.3)}
+body.light .b.bsc{background:rgba(0,102,204,.1);color:#0066cc;border-color:rgba(0,102,204,.3)}
+body.light .b.bne{background:rgba(220,38,38,.1);color:#b91c1c;border-color:rgba(220,38,38,.3)}
+body.light .b.bsox{background:rgba(126,34,206,.1);color:#6b21a8;border-color:rgba(126,34,206,.3)}
+body.light .tb{background:linear-gradient(135deg,rgba(0,102,204,.12),rgba(0,102,204,.06));border-color:rgba(0,102,204,.3);color:#0066cc}
+body.light .stitle{color:#0066cc}
+body.light .ti{color:#0066cc}
+body.light .tn{color:#0f172a}
+body.light .ct span{background:#0066cc;box-shadow:0 0 8px rgba(0,102,204,.4)}
+body.light .ll{color:#334155!important}
+/* ── LAYOUT ── */
+.w{position:relative;z-index:1}
+header{background:linear-gradient(135deg,#0d1525,#0a1628,#081222);border-bottom:1px solid var(--border2);padding:16px 36px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 4px 40px rgba(0,0,0,.5)}
+header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+.hl{display:flex;align-items:center;gap:14px}
+.logo{width:110px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#ffffff;border-radius:8px;padding:5px 10px;box-shadow:0 0 12px rgba(255,255,255,.15)}
+.logo img{width:90px;height:34px;object-fit:contain;filter:none;display:block}
+.ht h1{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;letter-spacing:2px;color:#fff;text-transform:uppercase}
+.ht p{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-top:2px}
+.hr{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:7px;background:rgba(0,255,157,.08);border:1px solid rgba(0,255,157,.2);border-radius:20px;padding:5px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);letter-spacing:1px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(.8)}}
+.upd{font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,.5)}
+/* ── THEME TOGGLE ── */
+.theme-toggle{display:flex;align-items:center;gap:8px}
+.t-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(255,255,255,.6);text-transform:uppercase;user-select:none;transition:color .3s}
+.t-label.active{color:#fff;font-weight:600}
+.switch{position:relative;display:inline-block;width:50px;height:24px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;cursor:pointer;inset:0;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:24px;transition:all .4s}
+.slider::before{content:'';position:absolute;height:18px;width:18px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:all .4s;box-shadow:0 2px 6px rgba(0,0,0,.3)}
+.slider::after{content:'🌙';position:absolute;right:4px;top:50%;transform:translateY(-50%);font-size:11px}
+input:checked + .slider{background:rgba(255,255,255,.9)}
+input:checked + .slider::before{transform:translateX(26px);background:#1e40af}
+input:checked + .slider::after{content:'☀️';left:4px;right:auto}
+main{padding:26px 36px;max-width:1600px;margin:0 auto}
+.stitle{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.stitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+/* ── SUMMARY CARDS ── */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:13px;margin-bottom:28px}
+.sc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:17px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;animation:fu .5s ease both}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ca,var(--accent));opacity:.7}
+.sc:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(0,212,255,.1)}
+.sc:nth-child(1){animation-delay:.05s}.sc:nth-child(2){animation-delay:.1s}.sc:nth-child(3){animation-delay:.15s}.sc:nth-child(4){animation-delay:.2s}.sc:nth-child(5){animation-delay:.25s}.sc:nth-child(6){animation-delay:.3s}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.sl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px}
+.sv{font-family:'Rajdhani',sans-serif;font-size:38px;font-weight:700;color:var(--text);line-height:1;margin-bottom:3px}
+.ss{font-size:10px;color:var(--text3)}
+.sb{margin-top:9px;height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.sbf{height:100%;background:var(--ca,var(--accent));border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1);width:0}
+/* ── CHARTS ROW ── */
+.cr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:17px;margin-bottom:28px}
+.cc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px}
+.ct{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.ct span{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.dw{display:flex;flex-direction:column;align-items:center;gap:16px}
+.li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);width:100%}
+.li:last-child{border-bottom:none}
+.ld{width:11px;height:11px;border-radius:50%;flex-shrink:0}
+.ll{flex:1;font-size:11px;color:var(--text2)}
+.lv{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--text)}
+.bc{display:flex;flex-direction:column;gap:10px;height:calc(100% - 36px)}
+.br{display:flex;align-items:center;gap:10px}
+.bn{font-size:10px;color:var(--text3);width:92px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bt{flex:1;height:10px;background:rgba(255,255,255,.05);border-radius:5px;overflow:hidden}
+.bf{height:100%;border-radius:5px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.bv{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--text2);width:26px;text-align:right;flex-shrink:0}
+.cmg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cm{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:8px;padding:11px;text-align:center}
+.cmv{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700}
+.cml{font-size:9px;color:var(--text3);margin-top:2px}
+/* ── CTE ── */
+#cte-rings{display:flex;gap:8px}
+/* ── APP TABLE ── */
+.as{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:28px}
+.tb{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(0,212,255,.12),rgba(0,212,255,.06));border:1px solid rgba(0,212,255,.25);border-radius:8px;padding:10px 20px;color:var(--accent);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.tb:hover{background:linear-gradient(135deg,rgba(0,212,255,.22),rgba(0,212,255,.1));box-shadow:0 0 20px rgba(0,212,255,.15)}
+.tb .arr{transition:transform .3s}.tb.open .arr{transform:rotate(180deg)}
+.fb{display:flex;align-items:center;gap:10px;margin:15px 0 12px;flex-wrap:wrap}
+.fl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);letter-spacing:1px}
+.fs,.fsi{background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 12px;outline:none;transition:border-color .2s;cursor:pointer}
+.fsi{min-width:185px;cursor:text}.fsi::placeholder{color:var(--text3)}
+.fs:focus,.fsi:focus{border-color:var(--accent)}
+.rc{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3)}.rc strong{color:var(--accent)}
+.tp{display:none}.tp.open{display:block}
+.tw{overflow:auto;max-height:560px;border-radius:8px;border:1px solid var(--border)}
+.tw::-webkit-scrollbar{width:4px;height:4px}.tw::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+table{width:100%;border-collapse:collapse;font-size:11px}
+thead{position:sticky;top:0;z-index:5}
+th{background:var(--bg3);color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:11px 12px;text-align:left;border-bottom:1px solid var(--border2);white-space:nowrap;cursor:pointer;user-select:none;transition:color .2s}
+th:hover{color:var(--accent)}.asc::after{content:' ↑';color:var(--accent)}.desc::after{content:' ↓';color:var(--accent)}
+td{padding:9px 12px;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text2);vertical-align:middle;white-space:nowrap}
+tr:hover td{background:rgba(255,255,255,.02)}
+.ti{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:10px}
+.tn{color:var(--text);font-weight:500;max-width:175px;overflow:hidden;text-overflow:ellipsis}
+.b{display:inline-block;padding:2px 9px;border-radius:20px;font-size:9px;font-weight:500;white-space:nowrap}
+.bl{background:rgba(0,255,157,.1);color:var(--green);border:1px solid rgba(0,255,157,.2)}
+.bp{background:rgba(255,215,0,.1);color:var(--yellow);border:1px solid rgba(255,215,0,.2)}
+.bok{background:rgba(0,255,157,.1);color:var(--green);border:1px solid rgba(0,255,157,.2)}
+.bpend{background:rgba(255,140,66,.1);color:var(--orange);border:1px solid rgba(255,140,66,.2)}
+.bna{background:rgba(255,255,255,.05);color:var(--text3);border:1px solid var(--border)}
+.bsc{background:rgba(0,212,255,.1);color:var(--accent);border:1px solid rgba(0,212,255,.2)}
+.bne{background:rgba(255,68,102,.1);color:var(--red);border:1px solid rgba(255,68,102,.2)}
+.bsox{background:rgba(168,85,247,.1);color:var(--purple);border:1px solid rgba(168,85,247,.3)}
+.nr{text-align:center;padding:36px;color:var(--text3);font-family:'IBM Plex Mono',monospace;font-size:11px;display:none}
+footer{text-align:center;padding:18px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--text3);letter-spacing:1px}
+@media(max-width:900px){.cr{grid-template-columns:1fr}header{flex-direction:column;gap:12px;align-items:flex-start}main{padding:16px}}
+</style>
+</head>
+<body><div class="w">
+<header>
+  <div class="hl">
+    <div class="logo"><img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCACxARwDASIAAhEBAxEB/8QAHQABAQADAQEBAQEAAAAAAAAAAAgFBgcJAQIDBP/EAE0QAAEDAwIDAwYHCwgLAAAAAAABAgMEBQYHEQgSIRMxQRQiN1FhsxgyUnF1kZUJFTNVcnSUodLT1BYjJDZTVLG0NUJWYmWBg5KywdH/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAQIDBAUG/8QAMREBAAIBAgQDBgUFAQAAAAAAAAECAwQREhMhMQVh8BQVQVFxgTJSocHRMzQ1Q5Gx/9oADAMBAAIRAxEAPwCywAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhc8utVYsHv18oY4pKq3W2oq4GSoqsc+OJz2o5EVFVN0TfZUIyl4sNU5U3ZTYrFv1Tkt8y7fXMp2abRZdTEzT4KWvFe65wQevFLq25d0qMfb7Etrv3gbxTatNXrPj7vYttd/6kOn3PqPL19ledVeAIgsvFRqhNdaKlqIMZkjnqY4n/wBAlRdnPRF2Xte/qW+cmp0eTTTHH8V63i3YPjkRU2Xf/kuxPHFDrbmGmmYW2yY5R2SWCqtyVUj66nlkejlke3ZOWRqbbNTvRTq2iWTXLMtLLDk13bTMrq+B0kyU7FZGio9zfNRVVU6InipW+lvTFGWe0kWiZ2bkATtxQa15jpnm9stGO01lmpam3JUyeXU0kjuftHt6KyRmybNQrgwWz34Kdy1orG8qJBqGjGT3DM9L7FlF1hpYa24U6yzMpmubGi87k81HK5UTp4qpt5nes0tNZ+CYneNwAk7VLiovdozy52jDrZZK200Mvk7aqrjle6aRvSRzVY9qcnNuidF35d99lQ20+myai0xSOyLWivdWIOccPWpsWqGCNu00UFLd6SVae5UsO/JHJ3tc3dVXkc1UVN1XZeZN1VqnRzLJjtjtNLd4TE7xvAATNrxxG5Lp5qRdsYt+PWitpqKKKRks8kiPdzxNeqKiLt3qppp9Pk1FuHHHVFrRWN5UyD4xeZjXL4pufTBYAMVmNyns2IXm70rI3z0NBPUxNkRVYrmRuciKiKi7bp12VCYjedhlQQpV8V2qksfOjcXpEXxjoJNk/wC+VT/AvFPqqq/6asafNQM/aPVjwbUT8vX2Zc6q+gQPFxVapxvRzrrj8qfJfQN2/U9F/WUhwqarZBqnYr3VZBDao5rdUxwxuoI3sa9rmK7dyOe7rungqGOo8NzYKcdttk1yRadnaAY7JrzQ47jtxv8AdJHR0NupZKqoc1vM5GMarl2TxXZO4j7J+L3MH3J7rDYcfttBuqRMuCSTzOTwVytkY1F28ERdvWpjptHl1O/BHZa14r3WkCGPhd6k/wB3wz9Dm/iB8LvUn+74Z+hzfxB1+5tT5Kc6q5wcG4UdYsn1UrMkhyGGzMbbI6V0DrfC9m6yLKjkdzSP3/Bt22271O8nn58NsGScd+8NKzExvAADJIAAAAAmT7oF/U/FE/4pJ7lxn+BP0MVf03P7uIwH3QL+qGKfSknuXGf4E/QxV/Tc/u4j2Lf42Pr+8sf9rvgAPHbIs49/SjY/oRvv5TcdDuIHTfENKLBjd6rblHcKGndHO2K3ySNRVe53RyJsvRUNO49/SjY/oRvv5Tc9DdANNsv0nx/JL3brhJcK6ndJO+O4SxtVUe5OjUdsnRE7j6G3I9ix87fby+7njfmTs3L4Uukf4wu/2XN/8Ju4qtQca1Gze13fGJ6malpralNIs9O6FyP7V7uiOTqmzk6lJ/Bd0h/FV1+1Z/2ibuKvT/GtOs3tdoxenqIKWptqVMiTVD5lV/avbvu5VVE2anQjQex86OVxb+e2xk4+HqrLhc9AGI/mbvePOlnNOFz0AYj+Zu9486LXVVPQ0U9bWTMgpqeN0s0r12axjU3c5V8EREVTxtT/AFr/AFn/ANbV/DDkXFlqSuBadPobbULHfr5zUtErHbOhj2/nZvZytVERflPb4Ipwzhf0NoM6wm/ZBkMTo6asgkt9ldt+CkRfOqWp48r0RifkyIvehp2T3C9cQOvjILe6SKnrpvJqBHN3SjoY91WVU8F25pFRf9Z6N37in7/ea7D6imxPGl+9lqs1PFTU0TWNcrmtYmyuVyLuq/r716qe1XDfBijDjna89Z8vXb/ry/EPEMWjpzssTMb7Rsl7RLMLnozrHLTX5rqalSd1sv0HVUa1HbJKnr5Heei+LHO2+Mh6DxvZJG2SN7XsciOa5q7oqL3KikccXmFzXCyWjVulpEifVxx0l6YxuycyLywz/MuyMX/pJ6zofBTqQmQ4c7BrpU811sMSeSc6+dNRbo1u3r7NVRi+xY/FVMfEMUZ8UaisdY6W9eumzs0+WLViY7TG8fdQx59cZ3p4yX82pv8ALMPQU8+uM708ZL+bU3+WYZ+C/wBxP0/eGmb8L0Di/BM/JQ/R+YvwTPyUP0eQ2DXdT/RplH0PV+5ebEa7qf6NMo+h6v3Ly+P8cIns8/8Ah8yKwYpqtZb9lD+S00zJ0nd5O6b40D2t8xqKq+c5vh07ysW8Q+hLfi17m/NYqj92SXoFiNrzrVGz4teZKqOhrGTLI6mejJE5IXvTZVRU72p4FUfBN0z/ABhk36bF+6PofEfZebHOmd9vh93Pi4tujq2A3/Es3xuLIMZZDU26WR8bJHUixKrmLyuTle1F6KnqNkhhhhRUiiZGi9/K1ENb0xwi0ae4lDjNjlrJaKKWSVrqqRr5N3uVy9Uaibbr6jZz57Jw8c8Hb4OiO3Vo3ED6Dc3+gqv3TiQuFPUPEtO77kFZlz52wV1LBFT9lSOnVXNc9Xbo1F26OQvCtpaauop6KsgiqKaojdFNFI1HMkY5NnNci9FRUVUVDhN54T9Mq+vkqaOtyO0xPXdKakrI3RN+btY3uT5uY9DRanDXDbDl32n5M71tMxMP7/CZ0X/trh9jyfsj4TOi/wDbXD7Hk/ZMZ8EPTz/aTMP0ml/hzX9SeF/BsZ08yPI6G/5TNVWu11NZDHPPTLG98cTntRyNgRVaqom+you3ihrWnh9piItbr6+Rvkd+01zfD87s8l1xCvhqoY39nOxIlilidtuiPY5EcnsXbZfBVNqI6+5/OcmZ5YxHLyrbqdVTfoqpI/b/ABX6yxTh1uCMGaaVnotS3FXcAByrgAAAADivFhprk+pWPWKhxhtC6ahrXzzeVTrE3lWNWpsqNXdd1MrwvYJkGnmnNRYskbSNrX3KWpb5NMsjORzI0TqqJ13avgdVB0Tqrzh5PwV4Y4uIABzrJi4utKM9zzObXdsUsjLjSU9rSnkd5XDEqSdrI7baRzd+jk6+07HoDYbtjGj2OWG+0a0dyo6dzKiBZGP5Hdo5duZiq1eip3KpvQOnJqr3w1wzEbQpFIi24TBxc6V57nmoFouOKWH74UcFrSCWZauCJGSdq922z3oq9FRd0RUKfBXT6i2nvx17ptWLRtLSNB8fuuLaRY7j98p209xoqZY54myNejXc7l+M1VReip3GB4nMfz3LsBTF8HgpnNrpU++UktUkKrA3Zeyb6+d22/hyoqdeY6qCK57Rl5u3XfdPD02cJ4TtHq/TuguV7yimhjyKvd5OxjJGyJT0zV32Rzem73JzLt4NZ4op2S62CzXWojqLhboKiWNNmvcnXb1Lt3p7FMkCcuoyZMk5JnrKlsOO9eC0bx59WLyWwWvIsYrsbulM2S211M6mlib5uzFTbzfUqd6KncqIpHen+h+tmDak018sdropUtdY5sdTNcIo46+n3Vrt2tVzmpIzwVN2qqL3ohbAL6fWZMFbVjaYn5ptSJ28nxiq5jVc1Wqqbq1fD2Ef8T+jGo+UarXXJsex1t1tlXHA1ixVcLXpyQtY7mZI5vii925YII0uqvpr8dITasWjaXn8/DOI6NeV1LqFunybvK5PrSXY/dPhHEjUPRkdNn+6/LvUkafW6ZEL+B3e97/kr+v8s+V5pw4WsG1hx7Nqy76g1V0S1yWuSCKnrr0tW7tllic13Ikj2ps1r033367eKnd85oKm64TfbZRMR9VWW2ogharkajnvjc1qbr3dVTqZgHn5tRbNk5kxET5NK12jZ550+jOuON18dZbsVvlDWQoqR1VtuESSN3TZeV8UvMiKiqnzKZH+TvEz8rUz7ZqP3pfYPQnxjJPelf1/lnyYjtKB4cY4nZnI2N2pO/8Av32ZifW6ZCgeE7H9V7G/JX6myXxzKhtIluS53dK1UVvbdryp2r+T40e/dv079ju4MM/iNs1JpNIjdauPad92q6u0WQ3HTLIaHFH1LL7NQvZQOp6nsJEl283lkVzeVfbuhHVRhfFJB8eTUBfyMnV//jUKXeCmm1ttPWaxWJ+qbU4kDLjXE2ne7Ur7bnX/AAmP5T4fxJXSnlt1VBqFVU9SxYpoKq8SrFKxybOa9Hy8qtVF2VF6KhfwOn3vf8lfX3U5XnLgvCVo/fdOqa63vKXQw3S6RxRNoopUk8njYrnee5PNV6q7uaqoiN7136d6APOz5rZ7ze/eWtaxWNoAAZJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAf/9k=" alt="Thales"></div>
+    <div class="ht">
+      <h1>Data at Rest (DAR) Encryption Status</h1>
+      <p>Cognizant · Identity &amp; Access Management · CS/IT, CF &amp; BU Apps</p>
+    </div>
+  </div>
+  <div class="hr">
+    <div class="pill"><div class="dot"></div>LIVE</div>
+    <div class="theme-toggle">
+      <span class="t-label active" id="lbl-dark">Dark</span>
+      <label class="switch"><input type="checkbox" id="theme-switch" onchange="toggleTheme(this)"><span class="slider"></span></label>
+      <span class="t-label" id="lbl-light">Light</span>
+    </div>
+    <div class="upd">Source: SharePoint · <span id="live-date"></span></div>
+  </div>
+</header>
+<main>
+
+<div class="stitle">📊 Dashboard Summary</div>
+<div class="sgrid">
+  <div class="sc" style="--ca:#00d4ff"><div class="sl">Total Apps</div><div class="sv">270</div><div class="ss">Per Summary Sheet</div><div class="sb"><div class="sbf" data-w="100%"></div></div></div>
+  <div class="sc" style="--ca:#00ff9d"><div class="sl">CS/IT/CF/BU Onboarded</div><div class="sv">256</div><div class="ss">CS / IT / CF / BU Apps</div><div class="sb"><div class="sbf" data-w="94.8%"></div></div></div>
+  <div class="sc" style="--ca:#a855f7"><div class="sl">CS/IT/CF Apps</div><div class="sv">224</div><div class="ss">Compliant &amp; Encrypted</div><div class="sb"><div class="sbf" data-w="87.5%"></div></div></div>
+  <div class="sc" style="--ca:#ff6b35"><div class="sl">BU Apps Onboarded</div><div class="sv">32</div><div class="ss">Compliant &amp; Encrypted</div><div class="sb"><div class="sbf" data-w="12.5%"></div></div></div>
+  <div class="sc" style="--ca:#ffd700"><div class="sl">Pending (BU)</div><div class="sv">14</div><div class="ss">Awaiting app team</div><div class="sb"><div class="sbf" data-w="5.2%"></div></div></div>
+  <div class="sc" style="--ca:#00d4ff"><div class="sl">In Progress (BU)</div><div class="sv">0</div><div class="ss">Currently onboarding</div><div class="sb"><div class="sbf" data-w="0%"></div></div></div>
+</div>
+
+<div class="cr">
+  <!-- Donut -->
+  <div class="cc">
+    <div class="ct"><span></span>Encryption Status</div>
+    <div class="dw">
+      <svg id="dsvg" width="170" height="170" viewBox="0 0 170 170"></svg>
+      <div id="dleg" style="width:100%"></div>
+    </div>
+  </div>
+  <!-- Bar chart -->
+  <div class="cc">
+    <div class="ct"><span></span>App Types</div>
+    <div class="bc" id="barchart"></div>
+  </div>
+  <!-- CTE + Licence -->
+  <div class="cc">
+    <div class="ct"><span></span>CTE Agent Health &amp; CTM Licence</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">CTE Agent Health</div>
+    <div id="cte-rings" style="display:flex;gap:8px;margin-bottom:16px"></div>
+    <div style="height:1px;background:var(--border);margin-bottom:14px"></div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:10px">CTM Licence</div>
+    <div style="position:relative;height:155px"><canvas id="licChart" role="img" aria-label="CTM licence usage bar chart">CTM Prod 5, Non-Prod 2, CCKM 8, CTE 300, Available 569.</canvas></div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px" id="lic-legend"></div>
+  </div>
+</div>
+
+<div class="as">
+  <div class="stitle" style="margin-bottom:13px">📋 App Details — App ID &amp; App Name by Status</div>
+  <button class="tb open" id="tbtn" onclick="toggleT()">
+    🔍 App ID &amp; App Name by Status &nbsp;
+    <span style="background:rgba(0,212,255,.2);border:1px solid rgba(0,212,255,.4);border-radius:12px;padding:2px 10px;font-size:11px">270 Apps</span>
+    <span class="arr">▲</span>
+  </button>
+  <div class="tp open" id="tpanel">
+    <div class="fb">
+      <span class="fl">FILTER:</span>
+      <input class="fsi" id="fsi" placeholder="Search App ID or Name…" oninput="applyF()">
+      <select class="fs" id="fst" onchange="applyF()"><option value="">All Status</option><option>Live</option><option>Pre-launch</option></select>
+      <select class="fs" id="fty" onchange="applyF()"></select>
+      <select class="fs" id="fca" onchange="applyF()"><option value="">All Category</option><option>IT</option><option>BU</option><option>CF-CS</option><option>CF-Others</option><option>CHS</option></select>
+      <select class="fs" id="fco" onchange="applyF()">
+        <option value="">All Compliance</option>
+        <option value="Compliant">✓ Compliant (256)</option>
+        <option value="Pending with app team">✗ Pending — Not Encrypted (14)</option>
+      </select>
+      <select class="fs" id="fsox" onchange="applyF()">
+        <option value="">All SOX</option>
+        <option value="Yes">✓ SOX Compliant (7)</option>
+        <option value="No">✗ Non-SOX (263)</option>
+      </select>
+      <span class="rc">Showing <strong id="rct">—</strong> of 270 apps</span>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr>
+          <th onclick="srt(0)">App ID</th>
+          <th onclick="srt(1)">App Name</th>
+          <th onclick="srt(2)">Status</th>
+          <th onclick="srt(3)">Category</th>
+          <th onclick="srt(4)">App Type</th>
+          <th onclick="srt(5)">Data Class.</th>
+          <th onclick="srt(6)">Enc. Status</th>
+          <th onclick="srt(7)">Compliance</th>
+          <th onclick="srt(8)">SOX</th>
+          <th onclick="srt(9)">Cloud</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div class="nr" id="nr">No matching apps found.</div>
+    </div>
+  </div>
+</div>
+
+</main>
+<footer>🔐 DATA AT REST (DAR) ENCRYPTION STATUS · COGNIZANT IAM · CS/IT,CF &amp; BU APPS · AUTO-UPDATED: <span id="footer-date"></span></footer>
+</div>
+<script>
+/* DATA: 270 apps (256 Encrypted+Compliant, 14 Not encrypted+Pending, 7 SOX=Yes)
+   Columns: [0]id [1]name [2]status [3]category [4]type [5]dataclass [6]enc [7]comp [8]sox [9]cloud */
+const A=[
+[2,"On-Boarding","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3,"Meeting Concierge","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[9,"India Hospitality","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[79,"Insight Compass OAC","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","Yes","Oracle"],
+[116,"Visitor Management System","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[255,"Exception Logger Component","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[257,"DB Read Access Tool","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[259,"OneCAAP Deployment tool","Live","IT","Tools","C2 - Confidential","Encrypted","Compliant","No",""],
+[295,"Clearance Automation","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[314,"Vanity URL","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[343,"Enterprise Communication Framework","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[347,"Global Business Card","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[360,"Enterprise System Inventory","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[361,"Client Visit Experience","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[383,"Outreach","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[405,"PRISM","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No",""],
+[407,"CLife","Live","IT","SubApp","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[428,"Quick SO","Live","IT","Biz App","C3 - Private","Encrypted","Compliant","No","Azure"],
+[483,"Kudos","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[486,"ID Card App","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[505,"My I-94","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[576,"TSmart","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[581,"Green Card Status App","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[595,"Safety Permit","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[610,"User Context Caching service","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[625,"My WorkSpace","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[636,"Visa Maxout","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[660,"H1B Nomination App","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[676,"HR e-Storage","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[693,"Customer Holidays","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[714,"Contact Center","Live","IT","SubApp","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[727,"Special Pay","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[746,"Discount Accrual System","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","Yes","Azure"],
+[757,"Contract Concourse","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[761,"GSMS Seat Costing","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[779,"MyPay","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[839,"Security Advisory","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[873,"Travel and Expense","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[883,"Corporate Card","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[885,"Post Processing","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[892,"Visa Stamping","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[895,"EUMS","Live","CF-CS","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[926,"One Cognizant","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[934,"SMS Blaster","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[950,"iContribute","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[988,"One Transport","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1001,"My Vehicle","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1087,"Academy Reports","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1235,"LaunchPAD V1 Batch","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1390,"Analysts Research","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1405,"The Relo app","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1414,"Goal Setting Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1416,"TR Dashboard","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","Yes","Azure"],
+[1429,"Assured Revenue on Click","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1452,"Bluebolt Central","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1473,"OneC External","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1496,"Physical Security","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[1508,"Ipay Finance","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No",""],
+[1549,"L-1 Visa App","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[1556,"Prism Support","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1568,"One Transport Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","Yes","Azure"],
+[1598,"Visa Request","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1624,"Location Master","Live","IT","Biz App","C3 - Private","Encrypted","Compliant","No","Azure"],
+[1625,"MicroInteractions","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1630,"Epay","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1640,"App Store","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1675,"1CAAP CRS","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1677,"Immigration SOR","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1716,"GYM Management","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1738,"My Learning Studio","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1785,"Cognizant Legislative Solution","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1804,"NA Payroll","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1805,"CDS","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1844,"Security Endorsement Tool","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1863,"Always cognizant","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1868,"Inter-Company Document Creation","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1873,"Compliance Administrator","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[1909,"e-Letters","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1976,"RESERVE Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[1989,"MyCareer","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1992,"eSurvey","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[1998,"Work Authorization","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[2079,"OneCAAPSecurity","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2090,"RHMS","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2094,"CCA Reports","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2099,"Trizetto Integration","Live","CHS","Tools","C4 - Public","Encrypted","Compliant","No","Azure"],
+[2135,"CCA RDP Reports","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2143,"Global Assoc advance","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2166,"OCR Post Processing","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2167,"BU Compliance Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2179,"GM Trac","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2185,"TruTime","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2190,"Background Verification","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2219,"ARC Analytics","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2220,"IT Release Calendar","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2221,"Facility Management System","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2226,"Web Help Desk","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2227,"LCA Wizard","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2229,"SmartSpace","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2234,"Access Card 2.0","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2259,"Travel Compliance","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2271,"CS PMO Dashboard","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2315,"BPM Batch","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2320,"TruTime Dashboard","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2342,"Stationery Requisition","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2362,"TSC Analytics","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2365,"CWR 360","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2368,"Remittance","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2379,"OneCognizant","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2381,"OneBCM","Live","IT","Biz App","C3 - Private","Encrypted","Compliant","No","Azure"],
+[2394,"GoPerform","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2413,"Request For Evidence","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2425,"Live Support - GSD","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[2426,"Global Talent Review","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[2451,"TS Recon Dashboard","Live","IT","Dashboard","C3 - Private","Encrypted","Compliant","No",""],
+[2463,"L1 wrapper","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2485,"RETINA","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No",""],
+[2490,"CogCOM","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[2502,"DRM Service","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2503,"IVR","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2504,"ProC - GM","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2526,"Talent Market Place","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2530,"SWNDataShare","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2563,"IT Automation","Live","IT","Data Stores","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2571,"OCR","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2593,"Assessment Portal","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2632,"OneCAAP Platform","Live","IT","Platform","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2640,"Reporting Server - R1 Cloud","Live","IT","Data Stores","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2652,"User Services","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2657,"GST Invoices","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[2687,"APAC E-Pay","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2693,"KnowHub_DotNet","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No",""],
+[2694,"Pursuit Governance","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2697,"Process Space","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2698,"Customer Experience","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2699,"2Do","Live","IT","SubApp","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2700,"Quality of Service","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2703,"DELite","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2705,"LaunchPAD","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2709,"Social-Bar","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2720,"Delivery Governance Dashboard","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2730,"KeyVault Service","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2735,"mainspring","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2736,"Associate 360","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[2739,"CADET","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[2742,"Talent Workbench","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2749,"Process Space DMS","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No",""],
+[2762,"Smartdesk","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[2771,"MAC Admin Console","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2774,"CMT","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[2778,"PCB ROBO","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No",""],
+[2781,"Swiss Ref Letters","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2787,"CLM-Utilities","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2789,"LATAM EPay","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2795,"Enterprise DataStore","Live","IT","Data Stores","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2812,"Feedback","Live","IT","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2843,"CS PAS Portal","Live","CF-CS","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2844,"iTools","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2887,"Eletters Comp","Live","IT","SubApp","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2915,"CInsights","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2918,"IDQ","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2932,"DevSecOps","Live","IT","Tools","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2946,"SLA Review","Live","IT","Utilities (A)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[2950,"S2P Global Insights","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2951,"Enterprise DW","Live","IT","Data Stores","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[2965,"DSRM Automation","Live","IT","Biz App","Yes","Encrypted","Compliant","No","Azure"],
+[3005,"Unified PL Forecast","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3040,"Telesoft CDR","Live","BU","Reports","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3044,"Secure FTP","Live","IT","Infra Service","Yes","Encrypted","Compliant","No","Azure"],
+[3045,"SSL Certificate Mgmt","Live","IT","Infra Service","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3048,"NetBrain","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3062,"App Manager","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3067,"Purge Hold","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3102,"Discover EDS","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3155,"Talent Supply Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3163,"ClientPrivacy Portal","Live","CF-Others","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3181,"Revenue Analytics","Live","IT","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3206,"Travelers TimeAtWork","Live","BU","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3213,"BNYM Hub","Live","BU","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3228,"CSS Analytics","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3229,"Facilities Insights","Live","IT","Dashboard","Both","Encrypted","Compliant","No","Azure"],
+[3309,"LS Chat History","Live","IT","SubApp","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3310,"LS Ticket Status","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3312,"LS Admin","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3313,"LS Insights","Live","IT","Reports","C3 - Private","Encrypted","Compliant","No","Azure"],
+[3314,"LS Reports","Live","IT","Reports","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3315,"LS SLM","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3316,"LS Agent","Live","IT","SubApp","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3318,"Executive Dashboard","Live","CF-Others","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3336,"IT RPA Automation","Live","IT","Platform","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3341,"Integrated DHD","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No",""],
+[3349,"PMOWorld","Live","BU","Dashboard","C2 - Confidential","Encrypted","Compliant","No",""],
+[3386,"SAST Scanner","Live","IT","Tools","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3387,"DAST Scanner","Live","IT","Tools","C2 - Confidential","Encrypted","Compliant","No",""],
+[3440,"DL Restriction - BOT","Live","BU","Utilities (A)","C1 - Restricted","Encrypted","Compliant","No",""],
+[3451,"SailPoint","Live","CF-CS","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3463,"CRecruit","Live","IT","Biz App","C3 - Private","Encrypted","Compliant","No","Others"],
+[3491,"CISTandTSmartPortal","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[3547,"Resilio","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","Yes",""],
+[3550,"Delivery CarbonFootprint Calculator","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3565,"Compliance and Controls Management","Live","IT","Biz App","C4 - Public","Encrypted","Compliant","Yes","Others"],
+[3573,"Trellix","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[3575,"Altiris - ITMS","Live","IT","Tools","C1 - Restricted","Encrypted","Compliant","No",""],
+[3585,"CREWS OpEx Budget Tool","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3586,"BGV SLA-Compliance","Live","IT","Dashboard","C3 - Private","Encrypted","Compliant","No","Azure"],
+[3593,"DG Automation","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[3597,"CS-NotifyVendor","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3599,"Enterprise Data Lake","Live","IT","Data Stores","C4 - Public","Encrypted","Compliant","No","Azure"],
+[3601,"GM360","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[3613,"Awards Mailer BOT","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No",""],
+[3639,"Global Assignment","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[3657,"Contract Authoring","Live","IT","Biz App","C3 - Private","Encrypted","Compliant","No","Azure"],
+[3679,"Game of Program and Projects","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3682,"CDL Opportunity Tracker","Live","BU","Dashboard","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3735,"CipherTrust Manager","Live","CF-CS","Tools","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3738,"Notify PM on Dual Allocation","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3749,"Training and Certification - Sales","Live","CF-Others","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3850,"Global Tracking System-Amazon","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3867,"Qurate Service Delivery Dashboard","Live","BU","Dashboard","C2 - Confidential","Encrypted","Compliant","Yes","Others"],
+[3874,"Send Salary Advance agreement","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No",""],
+[3896,"P2P Third Party Risk Management","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[3927,"DE Notify PO on open findings","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3954,"PFSS-PDF Data validation","Live","IT","Utilities (S)","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3955,"Send reminder to update Skillup","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3956,"Fetch Associate Details","Live","IT","Utilities (S)","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3990,"Cognizant On","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3994,"P2P OCR Engine","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[4107,"End to End Demand-Supply Dashboard","Live","IT","Dashboard","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[4122,"iTestify","Pre-launch","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[4134,"Mainspring Utility","Live","IT","Biz App","C4 - Public","Encrypted","Compliant","No","Others"],
+[4138,"G PULSE","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[4139,"1C AI Assistant powered by Neuro","Live","IT","Agentic AI / Agents","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[4156,"Integrated Knowledge Management Plan and Profiler","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[4159,"Hyperion Finance App","Live","IT","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[4347,"SmartFS","Pre-launch","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[4380,"Contract Authoring Phase 2","Pre-launch","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[4493,"Autonomous Interview Agent","Live","IT","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3397,"The Hartford PMO","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3136,"EasyDB","Live","BU","Reports","C2 - Confidential","Encrypted","Compliant","No",""],
+[3876,"Delcon","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[3186,"Cognizant Image Processor","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3216,"CCPMO","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3373,"AMEX SOX Compliance","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No",""],
+[576,"TSmart","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No",""],
+[3185,"SmartSupport","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[3195,"BFS PMO","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Others"],
+[3196,"CDOPMOPORTAL","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3224,"HC BPaaS Engagement","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3320,"IMIS","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3328,"EHConnect","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[3378,"LibertyPMO","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3369,"OSP Online","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[4543,"Payer BU Account PMO portal","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Others"],
+[4220,"LyfDox","Live","BU","Biz App","C1 - Restricted","Encrypted","Compliant","No","Azure"],
+[3598,"CCGlobalOps","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[4154,"ClientAssetTracker","Live","BU","Biz App","C2 - Confidential","Encrypted","Compliant","No","Azure"],
+[3211,"RetailOps Dashboard","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No",""],
+[3212,"PnROps Dashboard","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Others"],
+[3398,"MLEU BPM","Live","BU","Data Stores","C1 - Restricted","Not encrypted","Pending with app team","No","Others"],
+[2949,"Pega Demystified","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Azure"],
+[3607,"Capital Market PMO","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Azure"],
+[3175,"Elixir-Lime","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Others"],
+[3177,"Elixir - Nike","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Azure"],
+[3178,"Elixir - Digital Finance","Live","BU","Biz App","C2 - Confidential","Not encrypted","Pending with app team","No","Azure"],
+[3375,"Elixir-RCGTH","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No","Azure"],
+[3376,"Elixir - CommsMedia","Live","BU","Biz App","C1 - Restricted","Not encrypted","Pending with app team","No",""],
+[3817,"Elixir-4M","Live","BU","Biz App","C2 - Confidential","Not encrypted","Pending with app team","No","Azure"],
+[3818,"Elixir-viacom","Live","BU","Biz App","C2 - Confidential","Not encrypted","Pending with app team","No","Azure"],
+[3863,"Elixir-Sysco","Live","BU","Biz App","C2 - Confidential","Not encrypted","Pending with app team","No","Azure"],
+[4059,"Elixir-AppFolio","Live","BU","Biz App","C2 - Confidential","Not encrypted","Pending with app team","No","Azure"]
+];
+
+/* ── LIVE DATE ── */
+(function(){
+  var M=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var n=new Date(), d=String(n.getDate()).padStart(2,'0'), m=M[n.getMonth()], y=n.getFullYear();
+  var s=d+' '+m+' '+y;
+  ['live-date','footer-date'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=s;});
+})();
+
+/* ── INIT CHARTS ── */
+(function init(){
+  var ENC  = A.filter(function(a){return a[6]==='Encrypted';}).length;
+  var NENC = A.filter(function(a){return a[6]==='Not encrypted';}).length;
+
+  /* Donut — 170x170 SVG, r=68 */
+  var C=2*Math.PI*68, TOT=270, g=2;
+  var eL=(ENC/TOT)*C, nL=(NENC/TOT)*C, pct=((ENC/TOT)*100).toFixed(1);
+  document.getElementById('dsvg').innerHTML=
+    '<circle cx="85" cy="85" r="68" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="20"/>'+
+    '<circle cx="85" cy="85" r="68" fill="none" stroke="#00ff9d" stroke-width="20"'+
+    ' stroke-dasharray="'+(eL-g).toFixed(1)+' '+(C-eL+g).toFixed(1)+'"'+
+    ' stroke-dashoffset="'+(C/4).toFixed(1)+'" stroke-linecap="round"/>'+
+    '<circle cx="85" cy="85" r="68" fill="none" stroke="#ff4466" stroke-width="20"'+
+    ' stroke-dasharray="'+Math.max(0,nL-g).toFixed(1)+' '+(C-nL+g).toFixed(1)+'"'+
+    ' stroke-dashoffset="'+(C/4-eL).toFixed(1)+'" stroke-linecap="round"/>'+
+    '<text x="85" y="80" text-anchor="middle" fill="#fff" font-family="Rajdhani,sans-serif" font-size="26" font-weight="700">'+pct+'%</text>'+
+    '<text x="85" y="100" text-anchor="middle" fill="#556688" font-family="IBM Plex Mono,monospace" font-size="10">ENCRYPTED</text>';
+  document.getElementById('dleg').innerHTML=
+    [['#00ff9d','Encrypted',ENC],['#ff4466','Not Encrypted',NENC]]
+    .map(function(x){return '<div class="li"><div class="ld" style="background:'+x[0]+'"></div><div class="ll">'+x[1]+'</div><div class="lv">'+x[2]+'</div></div>';}).join('');
+
+  /* Bar chart */
+  var cnt={};
+  A.forEach(function(a){cnt[a[4]]=(cnt[a[4]]||0)+1;});
+  var s2=Object.entries(cnt).sort(function(a,b){return b[1]-a[1];}).slice(0,9);
+  var mx=s2[0]?s2[0][1]:1;
+  var cols=['#00d4ff','#00ff9d','#a855f7','#ff6b35','#ffd700','#ff4466','#0099cc','#7c3aed','#059669'];
+  document.getElementById('barchart').innerHTML=s2.map(function(e,i){
+    return '<div class="br"><div class="bn" title="'+e[0]+'">'+e[0]+'</div>'+
+    '<div class="bt"><div class="bf" style="background:'+cols[i%9]+';width:0" data-w="'+(e[1]/mx*100).toFixed(1)+'%"></div></div>'+
+    '<div class="bv">'+e[1]+'</div></div>';
+  }).join('');
+  setTimeout(function(){document.querySelectorAll('.bf').forEach(function(b){b.style.width=b.dataset.w;});},100);
+
+  /* CTE rings */
+  var cteData=[{m:'Feb',p:97},{m:'Mar',p:97},{m:'Apr',p:100}];
+  document.getElementById('cte-rings').innerHTML=cteData.map(function(d){
+    var C2=2*Math.PI*26, off=C2*(1-d.p/100), col=d.p===100?'#1D9E75':'#BA7517';
+    var lbl=d.p===100?'<div style="font-size:9px;color:#1D9E75;font-weight:500;margin-top:2px;text-align:center">Perfect</div>':'';
+    return '<div style="flex:1;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center">'+
+      '<div style="font-size:10px;color:var(--text3);margin-bottom:6px">'+d.m+'</div>'+
+      '<div style="position:relative;width:56px;height:56px;margin:0 auto">'+
+      '<svg viewBox="0 0 64 64" width="56" height="56">'+
+      '<circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="7"/>'+
+      '<circle cx="32" cy="32" r="26" fill="none" stroke="'+col+'" stroke-width="7"'+
+      ' stroke-dasharray="'+C2.toFixed(2)+'" stroke-dashoffset="'+off.toFixed(2)+'"'+
+      ' stroke-linecap="round" transform="rotate(-90 32 32)"/></svg>'+
+      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Rajdhani,sans-serif;font-size:14px;font-weight:700;color:'+col+'">'+d.p+'%</div></div>'+lbl+'</div>';
+  }).join('');
+
+  /* CTM Licence */
+  var licD=[{l:'CTM Prod',v:5,c:'#378ADD'},{l:'Non-Prod',v:2,c:'#7F77DD'},{l:'CCKM',v:8,c:'#D85A30'},{l:'CTE',v:300,c:'#BA7517'},{l:'Available',v:569,c:'#1D9E75'}];
+  document.getElementById('lic-legend').innerHTML=licD.map(function(d){
+    return '<span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--text2)"><span style="width:8px;height:8px;border-radius:2px;background:'+d.c+';display:inline-block"></span>'+d.l+' '+d.v+'</span>';
+  }).join('');
+  var sc=document.createElement('script');
+  sc.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js';
+  sc.onload=function(){
+    new Chart(document.getElementById('licChart'),{
+      type:'bar',
+      data:{labels:licD.map(function(d){return d.l;}),datasets:[{data:licD.map(function(d){return d.v;}),backgroundColor:licD.map(function(d){return d.c;}),borderRadius:5,borderSkipped:false}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return ' '+c.raw+' licenses';}}}},scales:{x:{grid:{display:false},ticks:{font:{size:10},color:'#556688',autoSkip:false,maxRotation:0}},y:{grid:{color:'rgba(255,255,255,.05)'},ticks:{font:{size:10},color:'#556688'}}}}
+    });
+  };
+  document.head.appendChild(sc);
+
+  /* Stat bars */
+  setTimeout(function(){document.querySelectorAll('.sbf').forEach(function(b){b.style.width=b.dataset.w;});},100);
+
+  /* Type filter */
+  var types=Array.from(new Set(A.map(function(a){return a[4];})));
+  types=types.filter(Boolean).sort();
+  document.getElementById('fty').innerHTML='<option value="">All App Types</option>'+types.map(function(t){return '<option>'+t+'</option>';}).join('');
+
+  /* Initial render */
+  applyF();
+})();
+
+/* ── TABLE ── */
+var sortCol=-1, sortDir=1, tOpen=true;
+
+function renderT(data){
+  document.getElementById('tbody').innerHTML=data.map(function(a){
+    var id=a[0],nm=a[1],st=a[2],cat=a[3],tp=a[4],dc=a[5],enc=a[6],comp=a[7],sox=a[8],cloud=a[9];
+    var stB   = st==='Live'?'<span class="b bl">Live</span>':'<span class="b bp">Pre-launch</span>';
+    var encB  = enc==='Encrypted'?'<span class="b bok">✓ Encrypted</span>':'<span class="b bne">✗ Not Encrypted</span>';
+    var compB = comp==='Compliant'?'<span class="b bok">Compliant</span>':'<span class="b bpend">Pending</span>';
+    var soxB  = sox==='Yes'?'<span class="b bsox">✓ Yes</span>':'<span class="b bna">No</span>';
+    return '<tr>'+
+      '<td class="ti">'+id+'</td>'+
+      '<td class="tn" title="'+nm+'">'+nm+'</td>'+
+      '<td>'+stB+'</td>'+
+      '<td style="font-size:10px">'+cat+'</td>'+
+      '<td style="font-size:10px">'+tp+'</td>'+
+      '<td style="font-size:10px;max-width:100px;overflow:hidden;text-overflow:ellipsis" title="'+dc+'">'+dc+'</td>'+
+      '<td>'+encB+'</td>'+
+      '<td>'+compB+'</td>'+
+      '<td>'+soxB+'</td>'+
+      '<td style="font-size:10px">'+(cloud||'—')+'</td>'+
+    '</tr>';
+  }).join('');
+  document.getElementById('rct').textContent=data.length;
+  document.getElementById('nr').style.display=data.length===0?'block':'none';
+}
+
+function applyF(){
+  var search=document.getElementById('fsi').value.toLowerCase();
+  var st=document.getElementById('fst').value;
+  var tp=document.getElementById('fty').value;
+  var cat=document.getElementById('fca').value;
+  var comp=document.getElementById('fco').value;
+  var sox=document.getElementById('fsox')?document.getElementById('fsox').value:'';
+  var f=A.filter(function(a){
+    return (!search||String(a[0]).indexOf(search)>=0||a[1].toLowerCase().indexOf(search)>=0)&&
+           (!st||a[2]===st)&&(!tp||a[4]===tp)&&(!cat||a[3]===cat)&&
+           (!comp||a[7]===comp)&&(!sox||a[8]===sox);
+  });
+  if(sortCol>=0)f.sort(function(a,b){
+    var va=typeof a[sortCol]==='number'?a[sortCol]:String(a[sortCol]).toLowerCase();
+    var vb=typeof b[sortCol]==='number'?b[sortCol]:String(b[sortCol]).toLowerCase();
+    return va<vb?-sortDir:va>vb?sortDir:0;
+  });
+  renderT(f);
+}
+
+function srt(c){
+  sortDir=sortCol===c?sortDir*-1:1;sortCol=c;
+  document.querySelectorAll('th').forEach(function(th,i){th.className=i===c?(sortDir===1?'asc':'desc'):'';}); applyF();
+}
+
+function toggleT(){
+  tOpen=!tOpen;
+  document.getElementById('tpanel').classList.toggle('open',tOpen);
+  document.getElementById('tbtn').classList.toggle('open',tOpen);
+  if(tOpen)applyF();
+}
+
+/* ── THEME ── */
+function toggleTheme(cb){
+  if(cb.checked){document.body.classList.add('light');document.getElementById('lbl-dark').classList.remove('active');document.getElementById('lbl-light').classList.add('active');localStorage.setItem('dar-theme','light');}
+  else{document.body.classList.remove('light');document.getElementById('lbl-dark').classList.add('active');document.getElementById('lbl-light').classList.remove('active');localStorage.setItem('dar-theme','dark');}
+}
+(function(){
+  if(localStorage.getItem('dar-theme')==='light'){document.body.classList.add('light');var sw=document.getElementById('theme-switch');if(sw)sw.checked=true;var ld=document.getElementById('lbl-dark'),ll=document.getElementById('lbl-light');if(ld)ld.classList.remove('active');if(ll)ll.classList.add('active');}
+  else{var ld=document.getElementById('lbl-dark');if(ld)ld.classList.add('active');}
+})();
+</script>
+</body></html>
